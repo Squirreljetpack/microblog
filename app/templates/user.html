@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/upvotejs.css') }}">
+<script src="{{ url_for('static', filename='js/upvotejs.js') }}"></script>
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-2">
+            <img src="{{ user.avatar(192) }}" width=192 height=192 class="img-thumbnail ml-5">
+        </div>
+        <div class="col">
+            <div class="container ml-4">
+                <h1>User: {{ user.username }}</h1>
+                {% if user.about_me %}<p class="lead">{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}<p>Last seen on: {{ moment(user.last_seen).format('LLL') }}</p>{% endif %}
+                <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
+                {% if user == current_user %}
+                <p><a href="{{ url_for('main.edit_profile') }}">Edit your profile</a></p>
+                {% elif not current_user.is_following(user) %}
+                <p><a href="{{ url_for('main.follow', username=user.username) }}">Follow</a></p>
+                {% else %}
+                <p><a href="{{ url_for('main.unfollow', username=user.username) }}">Unfollow</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="mt-3 ml-4">
+                    <h4 class="card-title">Top Posts</h3>
+                </div>
+                <div class="card-body ml-4">
+                    <div>
+                        {% for post in topposts %}
+                        {% include "_ownposttime.html" %}
+                        {% endfor %}
+                        {% if prev_topurl %}
+                        <a href="{{ prev_topurl }}">Newer posts</a>
+                        {% endif %}
+                        {% if next_topurl %}
+                        <a href="{{ next_topurl }}">Older posts</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="mt-3 ml-4">
+                    <h4 class="card-title">Recent posts</h3>
+                </div>
+                <div class="card-body ml-4">
+                    <div>
+                        {% for post in recentposts %}
+                        {% include "_ownpostago.html" %}
+                        {% endfor %}
+                        {% if prev_recenturl %}
+                        <a href="{{ prev_recenturl }}">Newer posts</a>
+                        {% endif %}
+                        {% if next_recenturl %}
+                        <a href="{{ next_recenturl }}">Older posts</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
