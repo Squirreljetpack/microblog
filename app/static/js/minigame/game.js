@@ -20,6 +20,8 @@ class Level {
     }
 }
 
+
+
 class State {
     constructor(level, actors, status) {
       this.level = level;

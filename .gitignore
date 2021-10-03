@@ -8,11 +8,8 @@ microblog.code-workspace
 logs/
 .vscode
 .env
-<<<<<<< HEAD
-__pycache__/
 venv/
 certs/
-=======
 misc/
 __pycache__/
->>>>>>> d9fabd3b767235f312c659f355d8ce2d142e47e4
+app/search.py
