@@ -12,4 +12,3 @@ venv/
 certs/
 misc/
 __pycache__/
-app/search.py
