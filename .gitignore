@@ -12,3 +12,6 @@ venv/
 certs/
 misc/
 __pycache__/
+notes
+logfile.txt
+*.sqlite

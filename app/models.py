@@ -112,7 +112,7 @@ class User(UserMixin, db.Model):
         return followed.union(own).order_by(Post.timestamp.desc())
 
     def get_reset_password_token(self, expires_in=8640):
-        return jwt.encode({'reset password': self.id, 'exp': time() + expires_in}, current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+        return jwt.encode({'reset password': self.id, 'exp': time() + expires_in}, current_app.config['SECRET_KEY'], algorithm='HS256')
 
     def vote(self, post_id, value, status):
         prev_v=0

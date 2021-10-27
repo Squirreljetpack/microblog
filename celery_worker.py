@@ -1,5 +1,5 @@
 import os
 from app import celery, create_app
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app(config_name=os.getenv('FLASK_CONFIG'))
 app.app_context().push()
