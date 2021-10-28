@@ -2,9 +2,16 @@ cd ~/Desktop/microblog
 conda activate webdev
 ./run-redis.sh
 python -m smtpd -n -c DebuggingServer localhost:8025
-celery -A celery_worker.celery worker --loglevel=INFO -f ./logfile.txt
+celery -A celery_worker.celery worker --loglevel=INFO -f logfile.txt
 
 
 flask db init
 flask db migrate -m "message"
 flask db upgrade
+
+
+git pull
+sudo supervisorctl stop microblog
+flask db upgrade
+flask translate compile
+sudo supervisorctl start microblog
