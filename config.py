@@ -15,7 +15,7 @@ class Config():
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS')
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    ADMINS = ['squirrels@authmicroblog.online']
+    ADMINS = (os.environ.get("ADMINS") or 'admin@richardzhang.xyz').split(" ")
     POSTS_PER_PAGE = 25
     POSTS_PER_PAGE_USERS = 8
     CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
@@ -43,7 +43,7 @@ class DevelopmentConfig(Config):
     MAIL_USERNAME = None
     MAIL_PASSWORD = None
     MAIL_USE_TLS = None
-    ADMINS = ['squirrels@authmicroblog.online']
+    ADMINS = ['admin@richardzhang.xyz']
 
 
 class TestingConfig(Config):

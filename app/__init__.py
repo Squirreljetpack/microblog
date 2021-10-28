@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
-import os
+import os, sys
 from flask_moment import Moment
 from flask_mail import Mail
 from celery import Celery
@@ -68,9 +68,26 @@ def create_app(config_name='default'):
         file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
         file_handler.setLevel(logging.INFO)
         app.logger.addHandler(file_handler)
+        sys.stdout = StreamToLogger(app.logger,logging.INFO)
         app.logger.setLevel(logging.INFO)
         app.logger.info('Microblog startup')
 
     return app
+
+class StreamToLogger(object):
+    """
+    Fake file-like stream object that redirects writes to a logger instance.
+    """
+    def __init__(self, logger, level):
+       self.logger = logger
+       self.level = level
+       self.linebuf = ''
+
+    def write(self, buf):
+       for line in buf.rstrip().splitlines():
+          self.logger.log(self.level, line.rstrip())
+
+    def flush(self):
+        pass
 
 from app import models, email
