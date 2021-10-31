@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/upvotejs.css') }}">
-    <script src="{{ url_for('static', filename='js/upvotejs.js') }}"></script>
+
+{% assets 'utils_css' %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+{% endassets %}
+{% assets 'utils_js' %}
+    <script src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
     <div class = "jumbotron">
         <div class="container-fluid">
             <h1 class = "display-4">Hi, {{ current_user.username }}!</h1>
@@ -11,7 +17,10 @@
             <p>It promotes networking.</p>
             
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitPost">
-                    Submit Post
+                    Say something
+                </button>
+                <button type="button" class="btn btn-primary" href="#{{ url_for('blog.editor') }}">
+                    Submit post
                 </button>
             
         </div>
@@ -22,14 +31,13 @@
                 {{ form.hidden_tag() }}
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="submitPostLabel">Submit Post</h5>
+                        <h5 class="modal-title" id="submitPostLabel">Say something</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="PostText">{{ form.post.label }}</label>
                             {{ form.post(cols=32, rows=4, class="form-control") }}<br>
                         </div>
                     </div>
@@ -66,5 +74,6 @@
             </div>
         </div>
     </div>
+    <div class="bg-blue-100"></div>
 {% endblock %}
 

@@ -1,7 +1,7 @@
 from app import db
 from app.main import bp
 import json
-from app.miscutil import utils
+from app.utils import utils
 from flask import render_template, flash, redirect, url_for, request, send_file, current_app, g
 from app.main.forms import *
 from flask_login import current_user, login_required
@@ -40,16 +40,6 @@ def index():
     prev_url = url_for('main.index', page=posts.prev_num) if posts.has_prev else None
     return render_template('index.html', title='Home', posts=posts.items, form=form, next_url=next_url, prev_url=prev_url)
 
-
-@bp.route('/explore')
-@login_required
-def explore():
-    page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.timestamp.desc()).paginate(page, current_app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('main.explore', page=posts.next_num) if posts.has_next else None
-    prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
-    return render_template('explore.html', title='Explore', posts=posts.items, next_url=next_url, prev_url=prev_url)
-
 @bp.route('/user/<username>')
 @login_required
 def user(username):
@@ -63,32 +53,6 @@ def user(username):
     next_recenturl = url_for('main.index', page=recentposts.next_num) if recentposts.has_next else None
     prev_recenturl = url_for('main.index', page=recentposts.prev_num) if recentposts.has_prev else None
     return render_template('user.html', user=user, recentposts=recentposts.items, topposts = topposts.items, next_topurl=next_topurl, prev_topurl=prev_topurl, next_recenturl=next_recenturl, prev_recenturl=prev_recenturl, avatar=True)
-
-@bp.route('/edit_profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    form = EditProfileForm(current_user.username)
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
-        img = form.my_avatar.data[21:]
-        f = bytes(img, encoding="ascii")
-        if (f is None):
-            pass
-        else:
-            utils.convert_and_save(f, os.path.join(current_app.config["UPLOADS"], 'avatars', f"{current_user.id}.png"))
-            current_user.hasavatar = 1
-            flash(f"Your avatar has been submitted.", 'primary')
-        if form.noavatar.data:
-            current_user.hasavatar = 0
-            flash(f"Your avatar has been deleted.", 'primary')
-        db.session.commit()
-        flash('Your changes have been saved.', 'primary')
-        return redirect(url_for('main.user', username=current_user.username))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 @bp.route('/follow/<username>')
 @login_required
@@ -124,7 +88,7 @@ def unfollow(username):
 @login_required
 def search():
     if not g.search_form.validate():
-        return redirect(url_for('main.explore'))
+        return redirect(url_for('explore.feed'))
     page = request.args.get('page', 1, type=int)
     posts, total = Post.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     next_url = url_for('main.search', q=g.search_form.q.data, page=page + 1) \

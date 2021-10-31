@@ -12,16 +12,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
-    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="https://kit.fontawesome.com/5144473666.js" crossorigin="anonymous"></script>
+
+    {% assets 'globals_css' %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets 'globals_js' %}
+        <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    <style> 
+        body {
+          background-image: url( "{{ url_for('static', filename='images/large/penrose/default.svg') }}" );
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+    </style>
+
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light flex-wrap2 flex-md-nowrap">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light flex-wrap2 flex-md-nowrap">
         <div class="container-fluid">
             <a class="navbar-brand col-auto mr-0" href="#">
                 <img src="{{ url_for('static', filename='images/logos/nav.png') }}" width="40" height="32"
@@ -36,20 +47,31 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ url_for('main.index') }}">Home </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.explore') }}">Explore</a>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            Info
+                            Explore
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="{{ url_for('explore.feed') }}">Feed</a>
+                            <a class="dropdown-item" href="{{ url_for('explore.blogs') }}">Blogs</a>
+                            <a class="dropdown-item" href="{{ url_for('explore.news') }}">News</a>
                         </div>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Blog
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{{ url_for('blog.title') }}">Title</a>
+                            <a class="dropdown-item" href="{{ url_for('blog.editor') }}">Editor</a>
+                            <a class="dropdown-item" href="{{ url_for('blog.toc') }}">Table of Contents</a>
+                        </div>
                     </li>
+
                     {% if current_user.is_anonymous %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.index') }}">Login</a>
@@ -64,14 +86,20 @@
                     </li>
                     {% endif %}
                 </ul>
-                
-                {% if g.search_form %}
-                <form class="form-inline" align="right" action="{{ url_for('main.search') }}">
-                    {{ g.search_form.q(size=20, class="form-control mr-sm-2", placeholder=g.search_form.q.label.text) }}
-                    {{ g.search_form.submit(class="btn btn-outline-success my-2 my-sm-0", value="Search") }}
-                </form>
-                {% endif %}
-                <a href="{{ url_for('main.user', username=current_user.username) }}"><span class="glyphicon glyphicon-bell"></span></a>
+
+                <div class="navbar-nav me-auto">
+                    {% if not current_user.is_anonymous %}
+                    <li class="nav-item" style="float: right">
+                        <a class="nav-link" href="{{ url_for('settings.general') }}">Settings</a>
+                    </li>
+                    {% endif %}
+                    {% if g.search_form %}
+                    <form class="form-inline" action="{{ url_for('main.search') }}">
+                        {{ g.search_form.q(size=20, class="form-control mr-sm-2", placeholder=g.search_form.q.label.text) }}
+                        {{ g.search_form.submit(class="btn btn-outline-success my-2 my-sm-0", value="Search") }}
+                    </form>
+                    {% endif %}
+                </div>
 
             </div>
         </div>

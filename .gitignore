@@ -15,3 +15,6 @@ __pycache__/
 notes
 logfile.txt
 *.sqlite
+/app/static/node_modules
+/app/static/src
+*.webassets-cache

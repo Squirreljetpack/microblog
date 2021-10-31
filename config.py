@@ -23,6 +23,7 @@ class Config():
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     LANGUAGES = ['en', 'es']
 
+    ASSETS_AUTO_BUILD = True
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
@@ -44,6 +45,9 @@ class DevelopmentConfig(Config):
     MAIL_PASSWORD = None
     MAIL_USE_TLS = None
     ADMINS = ['admin@richardzhang.xyz']
+
+    ASSETS_DEBUG = False
+    ASSETS_AUTO_BUILD = True
 
 
 class TestingConfig(Config):

@@ -1,0 +1,33 @@
+{
+  "name": "static",
+  "version": "1.0.0",
+  "description": "microblog flask app dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Squirreljetpack/microblog.git"
+  },
+  "author": "squirreljetpack",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Squirreljetpack/microblog/issues"
+  },
+  "homepage": "https://github.com/Squirreljetpack/microblog#readme",
+  "devDependencies": {
+    "cssnano": "^5.0.8",
+    "gulp": "^4.0.2",
+    "postcss": "^8.3.11",
+    "postcss-cli": "^9.0.1",
+    "postcss-import": "^14.0.2",
+    "tailwindcss": "^2.2.19"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.10.2",
+    "cropperjs": "^1.5.12",
+    "htmx.org": "^1.6.0",
+    "jquery": "^3.6.0"
+  }
+}
