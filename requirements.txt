@@ -47,7 +47,7 @@ prompt-toolkit==3.0.20
 psycopg2==2.8.6
 pycosat==0.6.3
 pycparser==2.20
-PyJWT==2.1.0
+PyJWT==2.4.0
 PyMySQL==1.0.2
 pyOpenSSL==20.0.1
 pyperclip==1.8.2
