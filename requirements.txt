@@ -10,7 +10,7 @@ billiard==3.6.4.0
 blinker==1.4
 brotlipy==0.7.0
 celery==5.0.5
-certifi==2021.10.8
+certifi==2022.12.7
 cffi==1.14.6
 chardet==4.0.0
 charset-normalizer==2.0.4
